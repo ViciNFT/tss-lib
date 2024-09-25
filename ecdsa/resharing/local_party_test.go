@@ -54,7 +54,7 @@ func TestE2EConcurrent(t *testing.T) {
 	// init the new parties; re-use the fixture pre-params for speed
 	fixtures, _, err := keygen.LoadKeygenTestFixtures(testParticipants)
 	if err != nil {
-		common.Logger.Info("No test fixtures were found, so the safe primes will be generated from scratch. This may take a while...")
+		common.Logger.Println("No test fixtures were found, so the safe primes will be generated from scratch. This may take a while...")
 	}
 	newPIDs := tss.GenerateTestPartyIDs(testParticipants)
 	newP2PCtx := tss.NewPeerContext(newPIDs)
@@ -115,7 +115,7 @@ func TestE2EConcurrent(t *testing.T) {
 		fmt.Printf("ACTIVE GOROUTINES: %d\n", runtime.NumGoroutine())
 		select {
 		case err := <-errCh:
-			common.Logger.Errorf("Error: %s", err)
+			common.Logger.Printf("Error: %s", err)
 			assert.FailNow(t, err.Error())
 			return
 
@@ -191,7 +191,7 @@ signing:
 		fmt.Printf("ACTIVE GOROUTINES: %d\n", runtime.NumGoroutine())
 		select {
 		case err := <-signErrCh:
-			common.Logger.Errorf("Error: %s", err)
+			common.Logger.Printf("Error: %s", err)
 			assert.FailNow(t, err.Error())
 			return
 

@@ -49,7 +49,7 @@ func SHA512_256(in ...[]byte) []byte {
 	// n < len(data) or an error will never happen.
 	// see: https://golang.org/pkg/hash/#Hash and https://github.com/golang/go/wiki/Hashing#the-hashhash-interface
 	if _, err := state.Write(data); err != nil {
-		Logger.Errorf("SHA512_256 Write() failed: %v", err)
+		Logger.Printf("SHA512_256 Write() failed: %v", err)
 		return nil
 	}
 	return state.Sum(nil)
@@ -87,7 +87,7 @@ func SHA512_256i(in ...*big.Int) *big.Int {
 	// n < len(data) or an error will never happen.
 	// see: https://golang.org/pkg/hash/#Hash and https://github.com/golang/go/wiki/Hashing#the-hashhash-interface
 	if _, err := state.Write(data); err != nil {
-		Logger.Errorf("SHA512_256i Write() failed: %v", err)
+		Logger.Printf("SHA512_256i Write() failed: %v", err)
 		return nil
 	}
 	return new(big.Int).SetBytes(state.Sum(nil))
@@ -133,7 +133,7 @@ func SHA512_256i_TAGGED(tag []byte, in ...*big.Int) *big.Int {
 	// n < len(data) or an error will never happen.
 	// see: https://golang.org/pkg/hash/#Hash and https://github.com/golang/go/wiki/Hashing#the-hashhash-interface
 	if _, err := state.Write(data); err != nil {
-		Logger.Error(err)
+		Logger.Printf("Err %s\n", err.Error())
 		return nil
 	}
 	return new(big.Int).SetBytes(state.Sum(nil))
@@ -149,7 +149,7 @@ func SHA512_256iOne(in *big.Int) *big.Int {
 	// n < len(data) or an error will never happen.
 	// see: https://golang.org/pkg/hash/#Hash and https://github.com/golang/go/wiki/Hashing#the-hashhash-interface
 	if _, err := state.Write(data); err != nil {
-		Logger.Errorf("SHA512_256iOne Write() failed: %v", err)
+		Logger.Printf("SHA512_256iOne Write() failed: %v\n", err)
 		return nil
 	}
 	return new(big.Int).SetBytes(state.Sum(nil))

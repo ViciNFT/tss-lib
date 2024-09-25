@@ -210,7 +210,7 @@ func DeriveChildKey(index uint32, pk *ExtendedKey, curve elliptic.Curve) (*big.I
 
 	cryptoPk, err := crypto.NewECPoint(curve, pk.X, pk.Y)
 	if err != nil {
-		common.Logger.Error("error getting pubkey from extendedkey")
+		common.Logger.Println("error getting pubkey from extendedkey")
 		return nil, nil, err
 	}
 
@@ -231,19 +231,19 @@ func DeriveChildKey(index uint32, pk *ExtendedKey, curve elliptic.Curve) (*big.I
 	if ilNum.Cmp(curve.Params().N) >= 0 || ilNum.Sign() == 0 {
 		// falling outside of the valid range for curve private keys
 		err = errors.New("invalid derived key")
-		common.Logger.Error("error deriving child key")
+		common.Logger.Println("error deriving child key")
 		return nil, nil, err
 	}
 
 	deltaG := crypto.ScalarBaseMult(curve, ilNum)
 	if deltaG.X().Sign() == 0 || deltaG.Y().Sign() == 0 {
 		err = errors.New("invalid child")
-		common.Logger.Error("error invalid child")
+		common.Logger.Println("error invalid child")
 		return nil, nil, err
 	}
 	childCryptoPk, err := cryptoPk.Add(deltaG)
 	if err != nil {
-		common.Logger.Error("error adding delta G to parent key")
+		common.Logger.Println("error adding delta G to parent key")
 		return nil, nil, err
 	}
 

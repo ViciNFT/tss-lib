@@ -72,7 +72,7 @@ func GeneratePreParamsWithContextAndRandom(ctx context.Context, rand io.Reader, 
 
 	// 4. generate Paillier public key E_i, private key and proof
 	go func(ch chan<- *paillier.PrivateKey) {
-		common.Logger.Info("generating the Paillier modulus, please wait...")
+		common.Logger.Println("generating the Paillier modulus, please wait...")
 		start := time.Now()
 		// more concurrency weight is assigned here because the paillier primes have a requirement of having "large" P-Q
 		PiPaillierSk, _, err := paillier.GenerateKeyPair(ctx, rand, paillierModulusLen, concurrency*2)
@@ -80,21 +80,21 @@ func GeneratePreParamsWithContextAndRandom(ctx context.Context, rand io.Reader, 
 			ch <- nil
 			return
 		}
-		common.Logger.Infof("paillier modulus generated. took %s\n", time.Since(start))
+		common.Logger.Printf("paillier modulus generated. took %s\n", time.Since(start))
 		ch <- PiPaillierSk
 	}(paiCh)
 
 	// 5-7. generate safe primes for ZKPs used later on
 	go func(ch chan<- []*common.GermainSafePrime) {
 		var err error
-		common.Logger.Info("generating the safe primes for the signing proofs, please wait...")
+		common.Logger.Println("generating the safe primes for the signing proofs, please wait...")
 		start := time.Now()
 		sgps, err := common.GetRandomSafePrimesConcurrent(ctx, safePrimeBitLen, 2, concurrency, rand)
 		if err != nil {
 			ch <- nil
 			return
 		}
-		common.Logger.Infof("safe primes generated. took %s\n", time.Since(start))
+		common.Logger.Printf("safe primes generated. took %s\n", time.Since(start))
 		ch <- sgps
 	}(sgpCh)
 
@@ -108,7 +108,7 @@ consumer:
 	for {
 		select {
 		case <-logProgressTicker.C:
-			common.Logger.Info("still generating primes...")
+			common.Logger.Println("still generating primes...")
 		case sgps = <-sgpCh:
 			if sgps == nil ||
 				sgps[0] == nil || sgps[1] == nil ||

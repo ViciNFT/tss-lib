@@ -39,7 +39,7 @@ func (round *round4) Start() *tss.Error {
 		return nil
 	}
 
-	common.Logger.Debugf(
+	common.Logger.Printf(
 		"%s Setting up DLN verification with concurrency level of %d",
 		round.PartyID(),
 		round.Concurrency(),
@@ -81,13 +81,13 @@ func (round *round4) Start() *tss.Error {
 				if !round.Parameters.NoProofMod() {
 					paiProofCulprits[j] = msg.GetFrom()
 				}
-				common.Logger.Warningf("modProof verify failed for party %s", msg.GetFrom(), err)
+				common.Logger.Printf("modProof verify failed for party %s", msg.GetFrom(), err)
 				return
 			}
 			ContextJ := common.AppendBigIntToBytesSlice(round.temp.ssid, big.NewInt(int64(j)))
 			if ok := modProof.Verify(ContextJ, paiPK.N); !ok {
 				paiProofCulprits[j] = msg.GetFrom()
-				common.Logger.Warningf("modProof verify failed for party %s", msg.GetFrom(), err)
+				common.Logger.Printf("modProof verify failed for party %s", msg.GetFrom(), err)
 			}
 		}(j, msg, r2msg1)
 		_j := j
@@ -95,14 +95,14 @@ func (round *round4) Start() *tss.Error {
 		dlnVerifier.VerifyDLNProof1(r2msg1, H1j, H2j, NTildej, func(isValid bool) {
 			if !isValid {
 				dlnProof1FailCulprits[_j] = _msg.GetFrom()
-				common.Logger.Warningf("dln proof 1 verify failed for party %s", _msg.GetFrom())
+				common.Logger.Printf("dln proof 1 verify failed for party %s", _msg.GetFrom())
 			}
 			wg.Done()
 		})
 		dlnVerifier.VerifyDLNProof2(r2msg1, H2j, H1j, NTildej, func(isValid bool) {
 			if !isValid {
 				dlnProof2FailCulprits[_j] = _msg.GetFrom()
-				common.Logger.Warningf("dln proof 2 verify failed for party %s", _msg.GetFrom())
+				common.Logger.Printf("dln proof 2 verify failed for party %s", _msg.GetFrom())
 			}
 			wg.Done()
 		})

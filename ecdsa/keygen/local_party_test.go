@@ -44,13 +44,14 @@ func TestStartRound1Paillier(t *testing.T) {
 	setUp("debug")
 
 	pIDs := tss.GenerateTestPartyIDs(1)
+	common.Logger.Println(pIDs[0].String())
 	p2pCtx := tss.NewPeerContext(pIDs)
 	threshold := 1
 	params := tss.NewParameters(tss.EC(), p2pCtx, pIDs[0], len(pIDs), threshold)
 
 	fixtures, pIDs, err := LoadKeygenTestFixtures(testParticipants)
 	if err != nil {
-		common.Logger.Info("No test fixtures were found, so the safe primes will be generated from scratch. This may take a while...")
+		common.Logger.Println("No test fixtures were found, so the safe primes will be generated from scratch. This may take a while...")
 		pIDs = tss.GenerateTestPartyIDs(testParticipants)
 	}
 
@@ -90,7 +91,7 @@ func TestFinishAndSaveH1H2(t *testing.T) {
 
 	fixtures, pIDs, err := LoadKeygenTestFixtures(testParticipants)
 	if err != nil {
-		common.Logger.Info("No test fixtures were found, so the safe primes will be generated from scratch. This may take a while...")
+		common.Logger.Println("No test fixtures were found, so the safe primes will be generated from scratch. This may take a while...")
 		pIDs = tss.GenerateTestPartyIDs(testParticipants)
 	}
 
@@ -137,7 +138,7 @@ func TestBadMessageCulprits(t *testing.T) {
 
 	fixtures, pIDs, err := LoadKeygenTestFixtures(testParticipants)
 	if err != nil {
-		common.Logger.Info("No test fixtures were found, so the safe primes will be generated from scratch. This may take a while...")
+		common.Logger.Println("No test fixtures were found, so the safe primes will be generated from scratch. This may take a while...")
 		pIDs = tss.GenerateTestPartyIDs(testParticipants)
 	}
 
@@ -174,7 +175,7 @@ func TestE2EConcurrentAndSaveFixtures(t *testing.T) {
 	threshold := testThreshold
 	fixtures, pIDs, err := LoadKeygenTestFixtures(testParticipants)
 	if err != nil {
-		common.Logger.Info("No test fixtures were found, so the safe primes will be generated from scratch. This may take a while...")
+		common.Logger.Println("No test fixtures were found, so the safe primes will be generated from scratch. This may take a while...")
 		pIDs = tss.GenerateTestPartyIDs(testParticipants)
 	}
 
@@ -217,7 +218,7 @@ keygen:
 		fmt.Printf("ACTIVE GOROUTINES: %d\n", runtime.NumGoroutine())
 		select {
 		case err := <-errCh:
-			common.Logger.Errorf("Error: %s", err)
+			common.Logger.Printf("Error: %s", err)
 			assert.FailNow(t, err.Error())
 			break keygen
 

@@ -167,7 +167,7 @@ func (p *LocalParty) StoreMessage(msg tss.ParsedMessage) (bool, *tss.Error) {
 	case *DGRound4Message2:
 		p.temp.dgRound4Message2s[fromPIdx] = msg
 	default: // unrecognised message, just ignore!
-		common.Logger.Warningf("unrecognised message ignored: %v", msg)
+		common.Logger.Printf("unrecognised message ignored: %v", msg)
 		return false, nil
 	}
 	return true, nil

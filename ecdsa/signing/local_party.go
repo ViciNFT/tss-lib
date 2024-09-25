@@ -100,6 +100,18 @@ type (
 	}
 )
 
+func (l *LocalParty) GetBigR() *crypto.ECPoint {
+	return l.temp.bigR
+}
+
+func (l *LocalParty) GetR() *big.Int {
+	return l.temp.rx
+}
+
+func (l *LocalParty) GetSI() *big.Int {
+	return l.temp.si
+}
+
 func NewLocalParty(
 	msg *big.Int,
 	params *tss.Parameters,
@@ -232,7 +244,7 @@ func (p *LocalParty) StoreMessage(msg tss.ParsedMessage) (bool, *tss.Error) {
 	case *SignRound9Message:
 		p.temp.signRound9Messages[fromPIdx] = msg
 	default: // unrecognised message, just ignore!
-		common.Logger.Warningf("unrecognised message ignored: %v", msg)
+		common.Logger.Printf("unrecognised message ignored: %v", msg)
 		return false, nil
 	}
 	return true, nil

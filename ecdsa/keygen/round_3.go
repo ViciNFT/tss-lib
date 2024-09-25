@@ -87,7 +87,7 @@ func (round *round3) Start() *tss.Error {
 			if err != nil && round.Parameters.NoProofMod() {
 				// For old parties, the modProof could be not exist
 				// Not return error for compatibility reason
-				common.Logger.Warningf("modProof not exist:%s", Ps[j])
+				common.Logger.Printf("modProof not exist:%s", Ps[j])
 			} else {
 				if err != nil {
 					ch <- vssOut{errors.New("modProof verify failed"), nil}
@@ -112,7 +112,7 @@ func (round *round3) Start() *tss.Error {
 			if err != nil && round.NoProofFac() {
 				// For old parties, the facProof could be not exist
 				// Not return error for compatibility reason
-				common.Logger.Warningf("facProof not exist:%s", Ps[j])
+				common.Logger.Printf("facProof not exist:%s", Ps[j])
 			} else {
 				if err != nil {
 					ch <- vssOut{errors.New("facProof verify failed"), nil}
@@ -209,7 +209,7 @@ func (round *round3) Start() *tss.Error {
 	round.save.ECDSAPub = ecdsaPubKey
 
 	// PRINT public key & private share
-	common.Logger.Debugf("%s public key: %x", round.PartyID(), ecdsaPubKey)
+	common.Logger.Printf("%s public key: %x", round.PartyID(), ecdsaPubKey)
 
 	// BROADCAST paillier proof for Pi
 	ki := round.PartyID().KeyInt()

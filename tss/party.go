@@ -136,9 +136,9 @@ func BaseStart(p Party, task string, prepare ...func(Round) *Error) *Error {
 			return err
 		}
 	}
-	common.Logger.Infof("party %s: %s round %d starting", p.round().Params().PartyID(), task, 1)
+	common.Logger.Printf("party %s: %s round %d starting", p.round().Params().PartyID(), task, 1)
 	defer func() {
-		common.Logger.Debugf("party %s: %s round %d finished", p.round().Params().PartyID(), task, 1)
+		common.Logger.Printf("party %s: %s round %d finished", p.round().Params().PartyID(), task, 1)
 	}()
 	return p.round().Start()
 }
@@ -155,15 +155,15 @@ func BaseUpdate(p Party, msg ParsedMessage, task string) (ok bool, err *Error) {
 		return ok, err
 	}
 	p.lock() // data is written to P state below
-	common.Logger.Debugf("party %s received message: %s", p.PartyID(), msg.String())
+	common.Logger.Printf("party %s received message: %s", p.PartyID(), msg.String())
 	if p.round() != nil {
-		common.Logger.Debugf("party %s round %d update: %s", p.PartyID(), p.round().RoundNumber(), msg.String())
+		common.Logger.Printf("party %s round %d update: %s", p.PartyID(), p.round().RoundNumber(), msg.String())
 	}
 	if ok, err := p.StoreMessage(msg); err != nil || !ok {
 		return r(false, err)
 	}
 	if p.round() != nil {
-		common.Logger.Debugf("party %s: %s round %d update", p.round().Params().PartyID(), task, p.round().RoundNumber())
+		common.Logger.Printf("party %s: %s round %d update", p.round().Params().PartyID(), task, p.round().RoundNumber())
 		if _, err := p.round().Update(); err != nil {
 			return r(false, err)
 		}
@@ -173,10 +173,10 @@ func BaseUpdate(p Party, msg ParsedMessage, task string) (ok bool, err *Error) {
 					return r(false, err)
 				}
 				rndNum := p.round().RoundNumber()
-				common.Logger.Infof("party %s: %s round %d started", p.round().Params().PartyID(), task, rndNum)
+				common.Logger.Printf("party %s: %s round %d started", p.round().Params().PartyID(), task, rndNum)
 			} else {
 				// finished! the round implementation will have sent the data through the `end` channel.
-				common.Logger.Infof("party %s: %s finished!", p.PartyID(), task)
+				common.Logger.Printf("party %s: %s finished!", p.PartyID(), task)
 			}
 			p.unlock()                      // recursive so can't defer after return
 			return BaseUpdate(p, msg, task) // re-run round update or finish)

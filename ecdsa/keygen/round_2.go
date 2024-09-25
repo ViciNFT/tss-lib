@@ -31,7 +31,7 @@ func (round *round2) Start() *tss.Error {
 	round.started = true
 	round.resetOK()
 
-	common.Logger.Debugf(
+	common.Logger.Printf(
 		"%s Setting up DLN verification with concurrency level of %d",
 		round.PartyID(),
 		round.Concurrency(),

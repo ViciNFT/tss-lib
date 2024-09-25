@@ -6,8 +6,10 @@
 
 package common
 
-import (
-	"github.com/ipfs/go-log"
-)
+import "log"
 
-var Logger = log.Logger("tss-lib")
+//	"github.com/ipfs/go-log"
+
+//var Logger = log.Logger("tss-lib")
+
+var Logger = log.Default()

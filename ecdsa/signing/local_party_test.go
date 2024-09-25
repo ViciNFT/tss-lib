@@ -75,7 +75,7 @@ signing:
 		fmt.Printf("ACTIVE GOROUTINES: %d\n", runtime.NumGoroutine())
 		select {
 		case err := <-errCh:
-			common.Logger.Errorf("Error: %s", err)
+			common.Logger.Printf("Error: %s", err.Error())
 			assert.FailNow(t, err.Error())
 			break signing
 
@@ -170,7 +170,7 @@ signing:
 		fmt.Printf("ACTIVE GOROUTINES: %d\n", runtime.NumGoroutine())
 		select {
 		case err := <-errCh:
-			common.Logger.Errorf("Error: %s", err)
+			common.Logger.Printf("Error: %s", err.Error())
 			assert.FailNow(t, err.Error())
 			break signing
 
@@ -278,7 +278,7 @@ signing:
 	for {
 		select {
 		case err := <-errCh:
-			common.Logger.Errorf("Error: %s", err)
+			common.Logger.Printf("Error: %s", err.Error())
 			assert.FailNow(t, err.Error())
 			break signing
 
